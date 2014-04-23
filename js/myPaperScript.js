@@ -49,10 +49,12 @@ function loadImages(){
 		//raster = new Raster(imageSrc);
 		// raster = this;
 		//this.remove();
-		var raster = new Raster({
-			source: imageSrc,
-			});
 
+		
+		// var raster = new Raster({
+		// 	source: imageSrc,
+		// 	});
+		var raster = new Raster (imageSrc);
 		raster.visible = false;
 		raster.onLoad = function () {
 		raster = this;
