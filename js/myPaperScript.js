@@ -9,7 +9,6 @@ var frame;
 
 var myImgNames = [];
 var rasterImages = [];
-//var raster;
 
 var counter = 0;
 var imgToShow = -1;
@@ -25,9 +24,8 @@ var width = view.size.width;
 var height = view.size.height;
 
 var textItem = new PointText({
-	content: 'Draw a path by clicking the mouse.',
-	// point: new Point(420, 30),
-	point: new Point(width/4 + 120, height/4.3),
+	// content: 'Draw a path by clicking the mouse.',
+	point: new Point(0, 0),
 	fillColor: 'white',
 	fontSize: '20px'
 });
@@ -45,55 +43,41 @@ function loadImages(){
 	
 	for(var i = 0; i<myImgNames.length; i++){
 		var imageSrc = '/images/' + myImgNames[i];
-		// new Raster(imageSrc).on('load', function() {
-		//raster = new Raster(imageSrc);
-		// raster = this;
-		//this.remove();
-
-		// var raster = new Raster({
-		// 	source: imageSrc,
-		// 	});
 		var raster = new Raster (imageSrc);
 		raster.visible = false;
-		raster.onLoad = function () {
-		raster = this;
-		raster.position = new Point(width/4 + 280, height/4+120);
-		// console.log(view.size.width/4 + 120);
-
-		//adjust image size
-		var origW = raster.width;
-		var origH = raster.height;
-		var newW = 320;
-		var newH = 240;
-		var scaleW = newW/origW;
-		var scaleH = newH/origH;
-		// console.log("current width of photo: " + origW + " " + origH);
-		// console.log("new width of photo: " + raster.size);
-		raster.scale(scaleW, scaleH);
 		
-		// console.log("current width of photo: " + origW + " " + origH);
-	 // 	console.log("new width of photo: " + raster.size);
-	 
-		rasterImages.push(raster);
-		imageGroup.addChild(raster);
-}
-	// });
-	console.log("rasterImages array = " + rasterImages.length);
+		raster.onLoad = function () {
+			this.position = view.center;
+
+			//adjust image size
+			var origW = this.width;
+			var origH = this.height;
+			var newW = 320;
+			var newH = 240;
+			var scaleW = newW/origW;
+			var scaleH = newH/origH;
+			
+			this.scale(scaleW, scaleH);		
+			// console.log("current width of photo: " + origW + " " + origH);
+		 	// console.log("new width of photo: " + raster.size);
+		 
+			rasterImages.push(this);
+			imageGroup.addChild(this);
+		}
+		console.log("rasterImages array = " + rasterImages.length);
 	}
 	startCounter = true;
 }
 
-
 function drawFrame(){
-	// var width = view.size.width;
-	// var height = view.size.height;
-
 	frame = new Path.Rectangle({
-		point: [width/4 + 120, height/4],
+		// point: [width/4 + 120, height/4],
+		point: [0, 0],
 		size: [320, 240],
 		strokeColor: 'black',
 		fillColor: 'black'
 	});
+	frame.position = view.center;
 
 	//call groups here so that they draw on top of the frame
 	circleGroup = new Group(); 
@@ -165,7 +149,6 @@ function onMouseDown(event) {
 		var tempObject = new Circle(circleCount, currPointTrans);
 		myCircles.push(tempObject);
 		// console.log(myCircles);
-
 		}
 	}
 
@@ -206,9 +189,7 @@ function getImagesForPoints(){
 		// console.log(myString);
 		var goodString = myString.substring(1);
 		console.log(goodString);
-		myImgNames.push(goodString);
-
-		
+		myImgNames.push(goodString);		
 	}
 	loadImages();
 }
@@ -225,19 +206,16 @@ $(document).ready(function(){
 	$('#update').click(function(){
 		console.log("!");
 		getImagesForPoints();
-		//loadImages(); 
+
 		//reset myCircles object data
 		myCircles = [];
 		circleCount = 0;
 		// console.log("myCircles (should be zero): " + myCircles.length);
-		
-		//startCounter = true;
-		
+				
 		//remove circles
 		project.activeLayer.children[2].removeChildren();
 		console.log(project.activeLayer.children[2].children);
 		
-		// showImages(imgToShow, imgToRemove);
 		isPathComplete = true;
 	});
 
