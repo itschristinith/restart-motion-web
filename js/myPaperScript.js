@@ -50,7 +50,6 @@ function loadImages(){
 		// raster = this;
 		//this.remove();
 
-		
 		// var raster = new Raster({
 		// 	source: imageSrc,
 		// 	});
